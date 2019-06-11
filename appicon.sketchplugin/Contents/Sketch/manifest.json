@@ -1,0 +1,29 @@
+{
+  "$schema": "https://raw.githubusercontent.com/BohemianCoding/SketchAPI/develop/docs/sketch-plugin-manifest-schema.json",
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "iOS",
+      "identifier": "appicon.ios-export-command-identifier",
+      "script": "ios-export-command.js"
+    },
+    {
+      "name": "Android",
+      "identifier": "appicon.android-export-command-identifier",
+      "script": "android-export-command.js"
+    }
+  ],
+  "menu": {
+    "title": "appicon",
+    "items": [
+      "appicon.ios-export-command-identifier",
+      "appicon.android-export-command-identifier"
+    ]
+  },
+  "version": "0.1.0",
+  "description": "",
+  "name": "appicon",
+  "identifier": "appicon",
+  "disableCocoaScriptPreprocessor": true,
+  "appcast": "https://raw.githubusercontent.com//master/.appcast.xml"
+}
