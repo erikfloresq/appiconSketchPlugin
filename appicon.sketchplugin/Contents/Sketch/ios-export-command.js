@@ -121,33 +121,39 @@ var Rectangle = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle;
   if (mainLayer.frame.width != 1024 && mainLayer.frame.height != 1024) {
     sketch__WEBPACK_IMPORTED_MODULE_0___default.a.UI.message('Tu imagen debe tener un tamaño de 1024');
     return;
-  } // Create new layer
+  } // Create Arboards
 
 
-  var appIconSizes = [76, 152, 501];
-
-  function makeAppIcon(appIconSizes) {
+  function makeArtboards() {
+    var appIconSizes = [512, 152, 120, 80, 76, 58, 40, 29];
+    var layersToExport = [mainLayer];
     var artboardSpace = 50;
-    var layers = [mainLayer];
-    appIconSizes.forEach(function (appIconSize) {
-      console.log(appIconSize);
-      var mainLayerX = mainLayer.frame.x + mainLayer.frame.width + artboardSpace;
-      var mainLayerY = mainLayer.frame.y;
+    var appIconSizeSum = 0;
+    appIconSizes.forEach(function (appIconSize, index) {
+      var newLayerX = 0;
+
+      if (index == 0) {
+        newLayerX = mainLayer.frame.x + mainLayer.frame.width + artboardSpace;
+        print("".concat(index, " ").concat(appIconSize, " ").concat(newLayerX));
+      } else {
+        appIconSizeSum += appIconSizes[index - 1];
+        newLayerX = mainLayer.frame.x + mainLayer.frame.width + appIconSizeSum + artboardSpace * (index + 1);
+        print("".concat(index, " ").concat(appIconSize, " ").concat(newLayerX));
+      }
+
+      var newLayerY = mainLayer.frame.y;
       var newLayer = mainLayer.duplicate();
-      var newLayerX = mainLayerX + appIconSize + artboardSpace * (appIconSizes.length + 1);
-      var newLayerY = mainLayerY;
       newLayer.frame = new Rectangle(newLayerX, newLayerY, appIconSize, appIconSize);
       var currentImage = newLayer.layers[0];
       currentImage.frame.width = appIconSize;
       currentImage.frame.height = appIconSize;
       newLayer.name = "".concat(appIconSize);
       newLayer.selected = true;
-      layers.push(newLayer);
+      layersToExport.push(newLayer);
     });
-    return layers;
-  }
+    return layersToExport;
+  } // export
 
-  var layersToExport = makeAppIcon(appIconSizes); // export
 
   var config = {
     scales: '1,2,3',
@@ -155,7 +161,7 @@ var Rectangle = sketch__WEBPACK_IMPORTED_MODULE_0___default.a.Rectangle;
     output: '~/Desktop/ios-appicon',
     overwriting: true
   };
-  sketch__WEBPACK_IMPORTED_MODULE_0___default.a.export(layersToExport, config);
+  sketch__WEBPACK_IMPORTED_MODULE_0___default.a.export(makeArtboards(), config);
 });
 
 /***/ }),

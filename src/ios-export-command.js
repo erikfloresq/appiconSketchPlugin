@@ -20,33 +20,36 @@ export default function(context) {
     return
   }
 
-  // Create new layer
-  const appIconSizes = [76, 152, 501]
-
-  function makeAppIcon(appIconSizes) {
+  // Create Arboards
+  function makeArtboards() {
+    const appIconSizes = [512, 152, 120, 80, 76, 58, 40, 29]
+    const layersToExport = [mainLayer]
     const artboardSpace = 50
-    var layers = [mainLayer]
-    appIconSizes.forEach(appIconSize => {
-      console.log(appIconSize)
-      let mainLayerX = mainLayer.frame.x + mainLayer.frame.width + artboardSpace
-      let mainLayerY = mainLayer.frame.y
-      let newLayer = mainLayer.duplicate()
-      let newLayerX = mainLayerX + appIconSize + (artboardSpace*(appIconSizes.length+1))
-      let newLayerY = mainLayerY
+    const appIconSizeSum = 0
+    appIconSizes.forEach((appIconSize, index) => {
+      const newLayerX = 0
+      if (index == 0) {
+        newLayerX = mainLayer.frame.x + mainLayer.frame.width + artboardSpace
+        print(`${index} ${appIconSize} ${newLayerX}`)
+      } else {
+        appIconSizeSum += appIconSizes[index-1]
+        newLayerX = mainLayer.frame.x + mainLayer.frame.width + appIconSizeSum + (artboardSpace*(index+1))
+        print(`${index} ${appIconSize} ${newLayerX}`)
+      }
+      const newLayerY = mainLayer.frame.y
+      const newLayer = mainLayer.duplicate()
       newLayer.frame = new Rectangle(newLayerX, newLayerY, appIconSize, appIconSize)
-      let currentImage = newLayer.layers[0]
+      const currentImage = newLayer.layers[0]
       currentImage.frame.width = appIconSize
       currentImage.frame.height = appIconSize
       newLayer.name = `${appIconSize}`
       newLayer.selected = true
-      layers.push(newLayer)
-    });
-    return layers
+      layersToExport.push(newLayer)
+    })
+    return layersToExport
   }
-
-  const layersToExport = makeAppIcon(appIconSizes)
 
   // export
   const config = { scales: '1,2,3', formats: 'png', output: '~/Desktop/ios-appicon', overwriting: true }
-  sketch.export(layersToExport, config)
+  sketch.export(makeArtboards(), config)
 }
